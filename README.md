@@ -120,6 +120,26 @@ JIRA_ENDPOINT_BOARDS="false"
 # ... etc
 ```
 
+## Agent setup.
+
+### Opencode
+### Skill config
+Copy the included skill to your harness skills directory.
+```
+cp -rp skills/jira-cli ~/.config/opencode/skills
+```
+#### Agent Permission
+Apply the following to your opencode.json permissions block if you want to 
+manual review write operations of your agent.
+```json
+ "permission": {
+ 14     "bash": {
+ 17       "jiracli *": "allow",
+ 18       "JIRA_ALLOW_*=true jiracli *": "ask"
+ 19     }
+ 20   },
+```
+
 ## CLI Commands
 
 ### `jiracli init`
