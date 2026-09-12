@@ -28,7 +28,7 @@ type Filter struct {
 	Favourite        bool                 `json:"favourite"`
 	SharePermissions []SharePermission    `json:"sharePermissions,omitempty"`
 	EditPermissions  []SharePermission    `json:"editPermissions,omitempty"`
-	Subscriptions    []FilterSubscription `json:"subscriptions,omitempty"`
+	Subscriptions    interface{}          `json:"subscriptions,omitempty"`
 }
 
 type SharePermission struct {

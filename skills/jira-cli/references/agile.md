@@ -252,3 +252,68 @@ jiracli sprint complete <sprint-id> --json <json-payload> [--config <path>]
 ```bash
 jiracli sprint complete 1 --json '{"completeDate": "2024-01-29T18:00:00.000Z"}'
 ```
+
+**IMPORTANT:** The sprint must be in "active" state before completing. You cannot transition directly from "future" to "closed". First start the sprint:
+```bash
+# Start the sprint
+jiracli sprint update 1 --json '{"state":"active","startDate":"2024-01-15T00:00:00.000Z","endDate":"2024-01-29T00:00:00.000Z"}'
+
+# Then complete it
+jiracli sprint complete 1 --json '{"completeDate": "2024-01-29T18:00:00.000Z"}'
+```
+
+## Common Patterns
+
+### Find all active sprints across all boards
+```bash
+# List all boards first
+jiracli board list
+
+# Then check each board for active sprints
+jiracli board sprints 1 --state active
+jiracli board sprints 2 --state active
+```
+
+### Find issues in a specific sprint
+```bash
+# Using sprint issues command
+jiracli sprint issues <sprint-id>
+
+# Or using JQL search
+jiracli search --jql "sprint = <sprint-id>"
+```
+
+### Find backlog issues for a board
+```bash
+jiracli board backlog <board-id>
+```
+Returns issues not assigned to any active/closed sprint.
+
+### Filter board issues by JQL
+```bash
+jiracli board issues <board-id> --jql "status = 'To Do'"
+jiracli board issues <board-id> --jql "assignee = currentUser()"
+```
+JQL is applied on top of the board's filter.
+
+### Get sprint report data
+No dedicated sprint report command. Approximate with:
+```bash
+# Get sprint metadata (dates, state, goal)
+jiracli sprint get <sprint-id>
+
+# Get all issues in sprint
+jiracli sprint issues <sprint-id> --fields "summary,status,assignee,priority"
+```
+
+## Gotchas
+
+| Issue | Detail |
+|-------|--------|
+| `board issues` / `sprint issues` / `board backlog` use `issues[]` key | Other list endpoints use `values[]` |
+| `sprint complete` requires active state | Cannot transition from "future" to "closed" directly |
+| `sprint update` requires all fields when changing state | Must include `startDate`, `endDate`, `name` |
+| `sprint create` needs both `--board-id` and `originBoardId` in JSON | Redundant but both required |
+| `board create` needs `filterId` | Not obvious from the help text |
+| Closed sprints can't be re-opened | `sprint update` with `state: "active"` on a closed sprint returns 400 |
+| Board issues JQL is additive | Applied on top of board's saved filter, not replacing it |

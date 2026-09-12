@@ -16,15 +16,15 @@ func NewAvatarService(c *client.Client) *AvatarService {
 }
 
 type Avatar struct {
-	ID          int    `json:"id"`
-	Owner       string `json:"owner,omitempty"`
-	IsSystem    bool   `json:"isSystemAvatar"`
-	IsSelected  bool   `json:"isSelected"`
-	Filename    string `json:"filename,omitempty"`
-	ContentType string `json:"contentType,omitempty"`
-	Portable    bool   `json:"isDeletable,omitempty"`
-	Selectable  bool   `json:"isSelectable,omitempty"`
-	URL         string `json:"urls,omitempty"`
+	ID          interface{}          `json:"id"`
+	Owner       string               `json:"owner,omitempty"`
+	IsSystem    bool                 `json:"isSystemAvatar"`
+	IsSelected  bool                 `json:"isSelected"`
+	Filename    string               `json:"filename,omitempty"`
+	ContentType string               `json:"contentType,omitempty"`
+	Portable    bool                 `json:"isDeletable,omitempty"`
+	Selectable  bool                 `json:"isSelectable,omitempty"`
+	URLs        map[string]interface{} `json:"urls,omitempty"`
 }
 
 type AvatarList struct {

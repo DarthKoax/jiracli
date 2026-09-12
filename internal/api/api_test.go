@@ -357,6 +357,88 @@ func TestBoardService_Get(t *testing.T) {
 	}
 }
 
+func TestBoardService_GetIssues(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/rest/agile/1.0/board/1/issue" {
+			t.Errorf("Path = %v, want /rest/agile/1.0/board/1/issue", r.URL.Path)
+		}
+		json.NewEncoder(w).Encode(PaginatedIssues{
+			Total: 2,
+			Issues: []Issue{
+				{Key: "PROJ-1"},
+				{Key: "PROJ-2"},
+			},
+		})
+	}))
+	defer server.Close()
+
+	svc := NewBoardService(c)
+	result, err := svc.GetIssues(context.Background(), 1, 0, 50, "", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Total != 2 {
+		t.Errorf("Total = %v, want 2", result.Total)
+	}
+	if len(result.Issues) != 2 {
+		t.Errorf("len(Issues) = %v, want 2", len(result.Issues))
+	}
+}
+
+func TestBoardService_GetBacklog(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/rest/agile/1.0/board/1/backlog" {
+			t.Errorf("Path = %v, want /rest/agile/1.0/board/1/backlog", r.URL.Path)
+		}
+		json.NewEncoder(w).Encode(PaginatedIssues{
+			Total: 3,
+			Issues: []Issue{
+				{Key: "PROJ-1"},
+				{Key: "PROJ-2"},
+				{Key: "PROJ-3"},
+			},
+		})
+	}))
+	defer server.Close()
+
+	svc := NewBoardService(c)
+	result, err := svc.GetBacklog(context.Background(), 1, 0, 50, "", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Total != 3 {
+		t.Errorf("Total = %v, want 3", result.Total)
+	}
+}
+
+func TestBoardService_GetSprints(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/rest/agile/1.0/board/1/sprint" {
+			t.Errorf("Path = %v, want /rest/agile/1.0/board/1/sprint", r.URL.Path)
+		}
+		state := r.URL.Query().Get("state")
+		if state != "active" {
+			t.Errorf("state = %v, want active", state)
+		}
+		json.NewEncoder(w).Encode(PaginatedSprints{
+			Total: 1,
+			Values: []Sprint{
+				{ID: 1, Name: "Sprint 1", State: "active"},
+			},
+		})
+	}))
+	defer server.Close()
+
+	svc := NewBoardService(c)
+	result, err := svc.GetSprints(context.Background(), 1, 0, 50, "active")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Total != 1 {
+		t.Errorf("Total = %v, want 1", result.Total)
+	}
+}
+
 func TestBoardService_EndpointDisabled(t *testing.T) {
 	_, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		t.Error("Should not reach server when endpoint is disabled")
@@ -395,6 +477,141 @@ func TestSprintService_Get(t *testing.T) {
 	}
 	if sprint.Name != "Sprint 1" {
 		t.Errorf("Name = %v, want Sprint 1", sprint.Name)
+	}
+}
+
+func TestSprintService_GetIssues(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/rest/agile/1.0/sprint/1/issue" {
+			t.Errorf("Path = %v, want /rest/agile/1.0/sprint/1/issue", r.URL.Path)
+		}
+		json.NewEncoder(w).Encode(PaginatedIssues{
+			Total: 2,
+			Issues: []Issue{
+				{Key: "PROJ-1"},
+				{Key: "PROJ-2"},
+			},
+		})
+	}))
+	defer server.Close()
+
+	svc := NewSprintService(c)
+	result, err := svc.GetIssues(context.Background(), 1, 0, 50, "", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Total != 2 {
+		t.Errorf("Total = %v, want 2", result.Total)
+	}
+	if len(result.Issues) != 2 {
+		t.Errorf("len(Issues) = %v, want 2", len(result.Issues))
+	}
+}
+
+func TestSprintService_MoveIssues(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			t.Errorf("Method = %v, want POST", r.Method)
+		}
+		if r.URL.Path != "/rest/agile/1.0/sprint/1/issue" {
+			t.Errorf("Path = %v, want /rest/agile/1.0/sprint/1/issue", r.URL.Path)
+		}
+		w.WriteHeader(http.StatusNoContent)
+	}))
+	defer server.Close()
+
+	svc := NewSprintService(c)
+	err := svc.MoveIssues(context.Background(), 1, []string{"PROJ-1", "PROJ-2"})
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestSprintService_Create(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			t.Errorf("Method = %v, want POST", r.Method)
+		}
+		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(Sprint{ID: 2, Name: "Sprint 2", State: "future"})
+	}))
+	defer server.Close()
+
+	svc := NewSprintService(c)
+	sprint, err := svc.Create(context.Background(), 1, &Sprint{Name: "Sprint 2"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if sprint.Name != "Sprint 2" {
+		t.Errorf("Name = %v, want Sprint 2", sprint.Name)
+	}
+}
+
+func TestSprintService_Update(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPut {
+			t.Errorf("Method = %v, want PUT", r.Method)
+		}
+		json.NewEncoder(w).Encode(Sprint{ID: 1, Name: "Sprint 1 Updated"})
+	}))
+	defer server.Close()
+
+	svc := NewSprintService(c)
+	sprint, err := svc.Update(context.Background(), 1, &Sprint{Name: "Sprint 1 Updated"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if sprint.Name != "Sprint 1 Updated" {
+		t.Errorf("Name = %v, want Sprint 1 Updated", sprint.Name)
+	}
+}
+
+func TestSprintService_Delete(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodDelete {
+			t.Errorf("Method = %v, want DELETE", r.Method)
+		}
+		w.WriteHeader(http.StatusNoContent)
+	}))
+	defer server.Close()
+
+	svc := NewSprintService(c)
+	err := svc.Delete(context.Background(), 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestSprintService_Complete(t *testing.T) {
+	requestCount := 0
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		requestCount++
+		if requestCount == 1 {
+			// First request: GET sprint details
+			if r.Method != http.MethodGet {
+				t.Errorf("First request method = %v, want GET", r.Method)
+			}
+			json.NewEncoder(w).Encode(Sprint{ID: 1, Name: "Sprint 1", State: "active", OriginBoardID: 1})
+		} else {
+			// Second request: PUT to complete
+			if r.Method != http.MethodPut {
+				t.Errorf("Second request method = %v, want PUT", r.Method)
+			}
+			if r.URL.Path != "/rest/agile/1.0/sprint/1" {
+				t.Errorf("Path = %v, want /rest/agile/1.0/sprint/1", r.URL.Path)
+			}
+			json.NewEncoder(w).Encode(Sprint{ID: 1, Name: "Sprint 1", State: "closed"})
+		}
+	}))
+	defer server.Close()
+
+	svc := NewSprintService(c)
+	sprint, err := svc.Complete(context.Background(), 1, "2024-01-29T18:00:00.000Z")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if sprint.State != "closed" {
+		t.Errorf("State = %v, want closed", sprint.State)
 	}
 }
 
@@ -684,5 +901,322 @@ func TestAvatarService_GetSystemAvatars(t *testing.T) {
 	}
 	if len(avatars.System) != 1 {
 		t.Errorf("len(System) = %v, want 1", len(avatars.System))
+	}
+}
+
+func TestSearchService_SearchGet(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			t.Errorf("Method = %v, want GET", r.Method)
+		}
+		jql := r.URL.Query().Get("jql")
+		if jql != "project = PROJ AND status = Open" {
+			t.Errorf("jql = %v, want 'project = PROJ AND status = Open'", jql)
+		}
+		json.NewEncoder(w).Encode(SearchResult{
+			Total: 1,
+			Issues: []Issue{
+				{Key: "PROJ-1"},
+			},
+		})
+	}))
+	defer server.Close()
+
+	svc := NewSearchService(c)
+	result, err := svc.SearchGet(context.Background(), "project = PROJ AND status = Open", 0, 50, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Total != 1 {
+		t.Errorf("Total = %v, want 1", result.Total)
+	}
+}
+
+func TestSearchService_SearchGet_URLEncoding(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jql := r.URL.Query().Get("jql")
+		if jql != "project = TEST AND summary ~ \"special chars & symbols\"" {
+			t.Errorf("jql = %v, want 'project = TEST AND summary ~ \"special chars & symbols\"'", jql)
+		}
+		json.NewEncoder(w).Encode(SearchResult{Total: 0})
+	}))
+	defer server.Close()
+
+	svc := NewSearchService(c)
+	_, err := svc.SearchGet(context.Background(), "project = TEST AND summary ~ \"special chars & symbols\"", 0, 50, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestSearchService_SearchGet_WithPagination(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		startAt := r.URL.Query().Get("startAt")
+		maxResults := r.URL.Query().Get("maxResults")
+		if startAt != "10" {
+			t.Errorf("startAt = %v, want 10", startAt)
+		}
+		if maxResults != "5" {
+			t.Errorf("maxResults = %v, want 5", maxResults)
+		}
+		json.NewEncoder(w).Encode(SearchResult{Total: 0})
+	}))
+	defer server.Close()
+
+	svc := NewSearchService(c)
+	_, err := svc.SearchGet(context.Background(), "project = PROJ", 10, 5, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestSearchService_SearchGet_WithFieldsAndExpand(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fields := r.URL.Query().Get("fields")
+		expand := r.URL.Query().Get("expand")
+		if fields != "summary,status" {
+			t.Errorf("fields = %v, want summary,status", fields)
+		}
+		if expand != "changelog" {
+			t.Errorf("expand = %v, want changelog", expand)
+		}
+		json.NewEncoder(w).Encode(SearchResult{Total: 0})
+	}))
+	defer server.Close()
+
+	svc := NewSearchService(c)
+	_, err := svc.SearchGet(context.Background(), "project = PROJ", 0, 50, []string{"summary", "status"}, []string{"changelog"})
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestMyselfService_GetWithExpand(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		expand := r.URL.Query().Get("expand")
+		if expand != "groups,applicationRoles" {
+			t.Errorf("expand = %v, want groups,applicationRoles", expand)
+		}
+		json.NewEncoder(w).Encode(MyselfInfo{
+			DisplayName:  "Test User",
+			EmailAddress: "test@example.com",
+		})
+	}))
+	defer server.Close()
+
+	svc := NewMyselfService(c)
+	info, err := svc.Get(context.Background(), []string{"groups", "applicationRoles"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if info.DisplayName != "Test User" {
+		t.Errorf("DisplayName = %v, want Test User", info.DisplayName)
+	}
+}
+
+func TestSearchService_EpicLinkQuery(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jql := r.URL.Query().Get("jql")
+		if jql != `"Epic Link" = PROJ-100` {
+			t.Errorf("jql = %v, want '\"Epic Link\" = PROJ-100'", jql)
+		}
+		json.NewEncoder(w).Encode(SearchResult{
+			Total: 3,
+			Issues: []Issue{
+				{Key: "PROJ-101"},
+				{Key: "PROJ-102"},
+				{Key: "PROJ-103"},
+			},
+		})
+	}))
+	defer server.Close()
+
+	svc := NewSearchService(c)
+	result, err := svc.SearchGet(context.Background(), `"Epic Link" = PROJ-100`, 0, 50, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Total != 3 {
+		t.Errorf("Total = %v, want 3", result.Total)
+	}
+}
+
+func TestSearchService_EpicLinkInQuery(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jql := r.URL.Query().Get("jql")
+		if jql != `"Epic Link" in (PROJ-100, PROJ-101)` {
+			t.Errorf("jql = %v, want '\"Epic Link\" in (PROJ-100, PROJ-101)'", jql)
+		}
+		json.NewEncoder(w).Encode(SearchResult{Total: 5})
+	}))
+	defer server.Close()
+
+	svc := NewSearchService(c)
+	_, err := svc.SearchGet(context.Background(), `"Epic Link" in (PROJ-100, PROJ-101)`, 0, 50, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestSearchService_ParentQuery(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jql := r.URL.Query().Get("jql")
+		if jql != `parent = PROJ-123` {
+			t.Errorf("jql = %v, want 'parent = PROJ-123'", jql)
+		}
+		json.NewEncoder(w).Encode(SearchResult{
+			Total: 2,
+			Issues: []Issue{
+				{Key: "PROJ-124"},
+				{Key: "PROJ-125"},
+			},
+		})
+	}))
+	defer server.Close()
+
+	svc := NewSearchService(c)
+	result, err := svc.SearchGet(context.Background(), `parent = PROJ-123`, 0, 50, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Total != 2 {
+		t.Errorf("Total = %v, want 2", result.Total)
+	}
+}
+
+func TestSearchService_StatusCategoryQuery(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jql := r.URL.Query().Get("jql")
+		if jql != `statusCategory = Done` {
+			t.Errorf("jql = %v, want 'statusCategory = Done'", jql)
+		}
+		json.NewEncoder(w).Encode(SearchResult{Total: 10})
+	}))
+	defer server.Close()
+
+	svc := NewSearchService(c)
+	_, err := svc.SearchGet(context.Background(), `statusCategory = Done`, 0, 50, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestSearchService_ResolutionQuery(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jql := r.URL.Query().Get("jql")
+		if jql != `resolution = Unresolved` {
+			t.Errorf("jql = %v, want 'resolution = Unresolved'", jql)
+		}
+		json.NewEncoder(w).Encode(SearchResult{Total: 25})
+	}))
+	defer server.Close()
+
+	svc := NewSearchService(c)
+	_, err := svc.SearchGet(context.Background(), `resolution = Unresolved`, 0, 50, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestSearchService_SprintQuery(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jql := r.URL.Query().Get("jql")
+		if jql != `sprint in openSprints()` {
+			t.Errorf("jql = %v, want 'sprint in openSprints()'", jql)
+		}
+		json.NewEncoder(w).Encode(SearchResult{Total: 8})
+	}))
+	defer server.Close()
+
+	svc := NewSearchService(c)
+	_, err := svc.SearchGet(context.Background(), `sprint in openSprints()`, 0, 50, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestSearchService_SubTaskIssueTypesQuery(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jql := r.URL.Query().Get("jql")
+		if jql != `issuetype in subTaskIssueTypes()` {
+			t.Errorf("jql = %v, want 'issuetype in subTaskIssueTypes()'", jql)
+		}
+		json.NewEncoder(w).Encode(SearchResult{Total: 5})
+	}))
+	defer server.Close()
+
+	svc := NewSearchService(c)
+	_, err := svc.SearchGet(context.Background(), `issuetype in subTaskIssueTypes()`, 0, 50, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestSearchService_ComplexCombinedQuery(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jql := r.URL.Query().Get("jql")
+		expected := `project = PROJ AND issuetype = Story AND status = "In Progress" ORDER BY priority DESC`
+		if jql != expected {
+			t.Errorf("jql = %v, want '%s'", jql, expected)
+		}
+		json.NewEncoder(w).Encode(SearchResult{Total: 7})
+	}))
+	defer server.Close()
+
+	svc := NewSearchService(c)
+	_, err := svc.SearchGet(context.Background(), `project = PROJ AND issuetype = Story AND status = "In Progress" ORDER BY priority DESC`, 0, 50, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestSearchService_TextSearchQuery(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jql := r.URL.Query().Get("jql")
+		if jql != `text ~ "authentication"` {
+			t.Errorf("jql = %v, want 'text ~ \"authentication\"'", jql)
+		}
+		json.NewEncoder(w).Encode(SearchResult{Total: 3})
+	}))
+	defer server.Close()
+
+	svc := NewSearchService(c)
+	_, err := svc.SearchGet(context.Background(), `text ~ "authentication"`, 0, 50, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestSearchService_DateQuery(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jql := r.URL.Query().Get("jql")
+		if jql != `created >= -7d` {
+			t.Errorf("jql = %v, want 'created >= -7d'", jql)
+		}
+		json.NewEncoder(w).Encode(SearchResult{Total: 15})
+	}))
+	defer server.Close()
+
+	svc := NewSearchService(c)
+	_, err := svc.SearchGet(context.Background(), `created >= -7d`, 0, 50, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestSearchService_AssigneeQuery(t *testing.T) {
+	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jql := r.URL.Query().Get("jql")
+		if jql != `assignee = currentUser()` {
+			t.Errorf("jql = %v, want 'assignee = currentUser()'", jql)
+		}
+		json.NewEncoder(w).Encode(SearchResult{Total: 12})
+	}))
+	defer server.Close()
+
+	svc := NewSearchService(c)
+	_, err := svc.SearchGet(context.Background(), `assignee = currentUser()`, 0, 50, nil, nil)
+	if err != nil {
+		t.Fatal(err)
 	}
 }

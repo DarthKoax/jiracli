@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"net/url"
 
 	"github.com/darkkoax/jiracli/internal/client"
 )
@@ -45,7 +46,7 @@ func (s *SearchService) SearchGet(ctx context.Context, jql string, startAt, maxR
 	if err := s.client.CheckEndpoint("search"); err != nil {
 		return nil, err
 	}
-	path := "/rest/api/2/search?jql=" + jql
+	path := "/rest/api/2/search?jql=" + url.QueryEscape(jql)
 	if startAt > 0 {
 		path += "&startAt=" + itoa(startAt)
 	}
@@ -53,10 +54,10 @@ func (s *SearchService) SearchGet(ctx context.Context, jql string, startAt, maxR
 		path += "&maxResults=" + itoa(maxResults)
 	}
 	if len(fields) > 0 {
-		path += "&fields=" + joinStrings(fields)
+		path += "&fields=" + url.QueryEscape(joinStrings(fields))
 	}
 	if len(expand) > 0 {
-		path += "&expand=" + joinStrings(expand)
+		path += "&expand=" + url.QueryEscape(joinStrings(expand))
 	}
 
 	var result SearchResult

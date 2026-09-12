@@ -43,7 +43,7 @@ func getDefaultConfigPath() string {
 		return configDir + "/config.toml"
 	}
 	home, _ := os.UserHomeDir()
-	return home + "/.config/darthkoax/jiracli/config.toml"
+	return home + "/.config/jiracli/config.toml"
 }
 
 func outputJSON(v interface{}) {

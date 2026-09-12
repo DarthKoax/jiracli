@@ -7,7 +7,7 @@ jiracli init [--dir <path>]
 ```
 
 **Flags:**
-- `--dir <path>`: Directory to create config in (default: ~/.config/darthkoax/jiracli)
+- `--dir <path>`: Directory to create config in (default: ~/.config/jiracli)
 
 **Description:**
 Creates a default configuration file at the specified location. The config file contains placeholders for your Jira instance URL and API token.
@@ -20,7 +20,7 @@ jiracli init --dir /custom/path
 
 **Output:**
 ```
-Configuration file created at: ~/.config/darthkoax/jiracli/config.toml
+Configuration file created at: ~/.config/jiracli/config.toml
 Edit the file to set your Jira base_url and api_token.
 ```
 
@@ -31,7 +31,7 @@ jiracli connect [--config <path>]
 ```
 
 **Flags:**
-- `--config <path>`: Path to config file (default: ~/.config/darthkoax/jiracli/config.toml)
+- `--config <path>`: Path to config file (default: ~/.config/jiracli/config.toml)
 
 **Description:**
 Connects to the Jira Data Center instance using the configuration file and verifies authentication by fetching the current user's information.

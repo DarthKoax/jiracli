@@ -75,7 +75,7 @@ DESCRIPTION:
 
 FLAGS:
   --config <path>    Path to config file
-                     Default: ~/.config/darthkoax/jiracli/config.toml
+                     Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli connect                              # Use default config location

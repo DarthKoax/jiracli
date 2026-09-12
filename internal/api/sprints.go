@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"net/url"
 
 	"github.com/darkkoax/jiracli/internal/client"
 )
@@ -102,10 +103,10 @@ func (s *SprintService) GetIssues(ctx context.Context, sprintID int, startAt, ma
 	}
 	path := fmt.Sprintf("/rest/agile/1.0/sprint/%d/issue?startAt=%d&maxResults=%d", sprintID, startAt, maxResults)
 	if jql != "" {
-		path += "&jql=" + jql
+		path += "&jql=" + url.QueryEscape(jql)
 	}
 	if len(fields) > 0 {
-		path += "&fields=" + joinStrings(fields)
+		path += "&fields=" + url.QueryEscape(joinStrings(fields))
 	}
 	var result PaginatedIssues
 	if err := s.client.Get(ctx, path, &result); err != nil {
@@ -132,11 +133,35 @@ func (s *SprintService) SwapIssues(ctx context.Context, sprintID int, issueKeys 
 	return s.client.Post(ctx, path, body, nil)
 }
 
-func (s *SprintService) Complete(ctx context.Context, sprintID int, completeDate string) error {
+func (s *SprintService) Complete(ctx context.Context, sprintID int, completeDate string) (*Sprint, error) {
 	if err := s.client.CheckEndpoint("sprints"); err != nil {
-		return err
+		return nil, err
 	}
-	path := fmt.Sprintf("/rest/agile/1.0/sprint/%d/complete", sprintID)
-	body := map[string]interface{}{"completeDate": completeDate}
-	return s.client.Post(ctx, path, body, nil)
+	
+	// First get the current sprint details
+	sprint, err := s.Get(ctx, sprintID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get sprint details: %w", err)
+	}
+	
+	// Update with closed state and complete date
+	path := fmt.Sprintf("/rest/agile/1.0/sprint/%d", sprintID)
+	body := map[string]interface{}{
+		"name":          sprint.Name,
+		"state":         "closed",
+		"completeDate":  completeDate,
+		"originBoardId": sprint.OriginBoardID,
+	}
+	if sprint.StartDate != "" {
+		body["startDate"] = sprint.StartDate
+	}
+	if sprint.EndDate != "" {
+		body["endDate"] = sprint.EndDate
+	}
+	
+	var result Sprint
+	if err := s.client.Put(ctx, path, body, &result); err != nil {
+		return nil, err
+	}
+	return &result, nil
 }

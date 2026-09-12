@@ -118,14 +118,14 @@ agents/     — Agent skill documentation (jira-cli-skill.md)
 
 | Command | Description |
 |---------|-------------|
-| `init` | Create default config at `~/.config/darthkoax/jiracli/config.toml` |
+| `init` | Create default config at `~/.config/jiracli/config.toml` |
 | `connect` | Connect to Jira and verify authentication |
 | `version` | Print version information |
 | `help` | Show usage information |
 
 ### Default Config Path
 
-- Default: `~/.config/darthkoax/jiracli/config.toml`
+- Default: `~/.config/jiracli/config.toml`
 - Override directory: `JIRA_CONFIG_DIR` environment variable
 - Override file: `--config <path>` flag on `connect` command
 

@@ -40,7 +40,7 @@ USAGE:
   jiracli init [--dir <path>]
 
 DESCRIPTION:
-  Creates a default configuration file at ~/.config/darthkoax/jiracli/config.toml
+  Creates a default configuration file at ~/.config/jiracli/config.toml
   with all endpoints and methods enabled. The config file contains placeholders
   for your Jira instance URL and API token.
 
@@ -49,7 +49,7 @@ DESCRIPTION:
 
 FLAGS:
   --dir <path>    Directory to create config in
-                  Default: ~/.config/darthkoax/jiracli
+                   Default: ~/.config/jiracli
                   Can also be set via JIRA_CONFIG_DIR environment variable
 
 EXAMPLES:

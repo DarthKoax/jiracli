@@ -502,12 +502,12 @@ func handleSprintComplete(args []string) {
 	}
 	configPath := parseFlag(args, "--config")
 	services := getServices(configPath)
-	err = services.Sprints.Complete(context.Background(), sprintID, payload.CompleteDate)
+	result, err := services.Sprints.Complete(context.Background(), sprintID, payload.CompleteDate)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 		os.Exit(1)
 	}
-	fmt.Printf("Sprint %d completed successfully\n", sprintID)
+	outputJSON(result)
 }
 
 // Field handlers
@@ -1026,6 +1026,22 @@ func handlePermissionScheme(args []string) {
 }
 
 // Myself handlers
+func handleMyselfGet(args []string) {
+	configPath := parseFlag(args, "--config")
+	services := getServices(configPath)
+	expand := parseFlag(args, "--expand")
+	var expandList []string
+	if expand != "" {
+		expandList = []string{expand}
+	}
+	myself, err := services.Myself.Get(context.Background(), expandList)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
+	}
+	outputJSON(myself)
+}
+
 func handleMyselfLocale(args []string) {
 	configPath := parseFlag(args, "--config")
 	services := getServices(configPath)

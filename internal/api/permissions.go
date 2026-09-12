@@ -33,10 +33,10 @@ type MyPermissions struct {
 }
 
 type MyPermissionDetail struct {
-	ID       int    `json:"id"`
-	Key      string `json:"key"`
-	Name     string `json:"name"`
-	Type     string `json:"type"`
+	ID       interface{} `json:"id"`
+	Key      string      `json:"key"`
+	Name     string      `json:"name"`
+	Type     string      `json:"type"`
 	HavePermission bool `json:"havePermission"`
 }
 

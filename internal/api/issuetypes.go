@@ -15,12 +15,12 @@ func NewIssueTypeService(c *client.Client) *IssueTypeService {
 }
 
 type IssueType struct {
-	Self        string `json:"self"`
-	ID          string `json:"id"`
+	Self        string `json:"self,omitempty"`
+	ID          string `json:"id,omitempty"`
 	Name        string `json:"name"`
 	Description string `json:"description,omitempty"`
 	IconURL     string `json:"iconUrl,omitempty"`
-	Subtask     bool   `json:"subtask"`
+	Subtask     bool   `json:"subtask,omitempty"`
 	AvatarID    int    `json:"avatarId,omitempty"`
 	UntranslatedName string `json:"untranslatedName,omitempty"`
 }

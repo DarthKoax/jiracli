@@ -93,7 +93,7 @@ type PaginatedIssues struct {
 	MaxResults int     `json:"maxResults"`
 	Total      int     `json:"total"`
 	IsLast     bool    `json:"isLast"`
-	Values     []Issue `json:"values"`
+	Issues     []Issue `json:"issues"`
 }
 
 func (s *BoardService) GetAll(ctx context.Context, startAt, maxResults int, boardType, name, projectKeyOrID string) (*BoardSearchResult, error) {

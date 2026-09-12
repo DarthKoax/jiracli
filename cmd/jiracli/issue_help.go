@@ -68,7 +68,7 @@ FLAGS:
                        Example: --expand "renderedFields,transitions"
 
   --config <path>      Path to config file
-                       Default: ~/.config/darthkoax/jiracli/config.toml
+                       Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli issue get PROJ-123
@@ -116,7 +116,7 @@ FLAGS:
                       See JSON structure below
 
   --config <path>     Path to config file
-                      Default: ~/.config/darthkoax/jiracli/config.toml
+                      Default: ~/.config/jiracli/config.toml
 
 JSON PAYLOAD STRUCTURE:
   {
@@ -207,7 +207,7 @@ FLAGS:
                       Only include fields you want to change
 
   --config <path>     Path to config file
-                      Default: ~/.config/darthkoax/jiracli/config.toml
+                      Default: ~/.config/jiracli/config.toml
 
 JSON PAYLOAD STRUCTURE:
   {
@@ -282,7 +282,7 @@ FLAGS:
                        Default: false (subtasks are not deleted)
 
   --config <path>      Path to config file
-                       Default: ~/.config/darthkoax/jiracli/config.toml
+                       Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   # Delete a simple issue
@@ -324,7 +324,7 @@ ARGUMENTS:
 
 FLAGS:
   --config <path>    Path to config file
-                     Default: ~/.config/darthkoax/jiracli/config.toml
+                     Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli issue transitions PROJ-123
@@ -382,7 +382,7 @@ ARGUMENTS:
 
 FLAGS:
   --config <path>    Path to config file
-                     Default: ~/.config/darthkoax/jiracli/config.toml
+                     Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   # Transition to "In Progress"
@@ -515,7 +515,7 @@ ARGUMENTS:
 
 FLAGS:
   --config <path>    Path to config file
-                     Default: ~/.config/darthkoax/jiracli/config.toml
+                     Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli issue assign PROJ-123 john.doe
@@ -554,7 +554,7 @@ ARGUMENTS:
 
 FLAGS:
   --config <path>    Path to config file
-                     Default: ~/.config/darthkoax/jiracli/config.toml
+                     Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli issue comment list PROJ-123
@@ -597,7 +597,7 @@ ARGUMENTS:
 FLAGS:
   --body <text>    Comment text (required)
   --config <path>  Path to config file
-                   Default: ~/.config/darthkoax/jiracli/config.toml
+                   Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli issue comment add PROJ-123 --body "This is a comment"
@@ -640,7 +640,7 @@ ARGUMENTS:
 FLAGS:
   --body <text>    New comment text (required)
   --config <path>  Path to config file
-                   Default: ~/.config/darthkoax/jiracli/config.toml
+                   Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli issue comment update PROJ-123 10001 --body "Updated comment text"
@@ -676,7 +676,7 @@ ARGUMENTS:
 
 FLAGS:
   --config <path>  Path to config file
-                   Default: ~/.config/darthkoax/jiracli/config.toml
+                   Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli issue comment delete PROJ-123 10001
@@ -714,7 +714,7 @@ ARGUMENTS:
 
 FLAGS:
   --config <path>  Path to config file
-                   Default: ~/.config/darthkoax/jiracli/config.toml
+                   Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli issue worklog list PROJ-123
@@ -757,7 +757,7 @@ ARGUMENTS:
 FLAGS:
   --json <payload>  JSON object with worklog data (required)
   --config <path>   Path to config file
-                    Default: ~/.config/darthkoax/jiracli/config.toml
+                    Default: ~/.config/jiracli/config.toml
 
 JSON PAYLOAD:
   {
@@ -809,7 +809,7 @@ ARGUMENTS:
 FLAGS:
   --json <payload>  JSON object with updated worklog data (required)
   --config <path>   Path to config file
-                    Default: ~/.config/darthkoax/jiracli/config.toml
+                    Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli issue worklog update PROJ-123 10001 --json '{
@@ -848,7 +848,7 @@ ARGUMENTS:
 
 FLAGS:
   --config <path>  Path to config file
-                   Default: ~/.config/darthkoax/jiracli/config.toml
+                   Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli issue worklog delete PROJ-123 10001
@@ -886,7 +886,7 @@ ARGUMENTS:
 
 FLAGS:
   --config <path>  Path to config file
-                   Default: ~/.config/darthkoax/jiracli/config.toml
+                   Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli issue watcher list PROJ-123
@@ -928,7 +928,7 @@ ARGUMENTS:
 
 FLAGS:
   --config <path>  Path to config file
-                   Default: ~/.config/darthkoax/jiracli/config.toml
+                   Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli issue watcher add PROJ-123 john.doe
@@ -963,7 +963,7 @@ ARGUMENTS:
 
 FLAGS:
   --config <path>  Path to config file
-                   Default: ~/.config/darthkoax/jiracli/config.toml
+                   Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli issue watcher remove PROJ-123 john.doe
@@ -999,7 +999,7 @@ ARGUMENTS:
 
 FLAGS:
   --config <path>  Path to config file
-                   Default: ~/.config/darthkoax/jiracli/config.toml
+                   Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli issue vote get PROJ-123
@@ -1036,7 +1036,7 @@ ARGUMENTS:
 
 FLAGS:
   --config <path>  Path to config file
-                   Default: ~/.config/darthkoax/jiracli/config.toml
+                   Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli issue vote add PROJ-123
@@ -1070,7 +1070,7 @@ ARGUMENTS:
 
 FLAGS:
   --config <path>  Path to config file
-                   Default: ~/.config/darthkoax/jiracli/config.toml
+                   Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli issue vote remove PROJ-123

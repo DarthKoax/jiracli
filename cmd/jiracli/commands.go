@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 // Generic command handler pattern for all commands
@@ -107,6 +108,10 @@ func printGroupActionHelp(action string) {
 }
 
 func handleSearch(args []string) {
+	if len(args) == 0 || (len(args) > 0 && strings.HasPrefix(args[0], "--")) {
+		handleSearchGet(args)
+		return
+	}
 	actionHandlers := map[string]func([]string){
 		"get": handleSearchGet,
 	}
@@ -362,6 +367,10 @@ func printPermissionActionHelp(action string) {
 }
 
 func handleMyself(args []string) {
+	if len(args) == 0 || (len(args) > 0 && strings.HasPrefix(args[0], "--")) {
+		handleMyselfGet(args)
+		return
+	}
 	actionHandlers := map[string]func([]string){
 		"locale": handleMyselfLocale,
 	}

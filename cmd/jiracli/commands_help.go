@@ -116,7 +116,7 @@ FLAGS:
                         Options: schema, names, operations, editmeta, changelog
 
   --config <path>       Path to config file
-                        Default: ~/.config/darthkoax/jiracli/config.toml
+                        Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   # Simple search
@@ -516,7 +516,7 @@ FLAGS:
                      Example: --expand "groups,applicationRoles"
 
   --config <path>    Path to config file
-                     Default: ~/.config/darthkoax/jiracli/config.toml
+                     Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli myself
@@ -703,7 +703,7 @@ DESCRIPTION:
 
 FLAGS:
   --config <path>    Path to config file
-                     Default: ~/.config/darthkoax/jiracli/config.toml
+                     Default: ~/.config/jiracli/config.toml
 
 EXAMPLES:
   jiracli myself locale

@@ -131,12 +131,12 @@ func (s *ProjectService) Delete(ctx context.Context, projectKeyOrID string) erro
 	return s.client.Delete(ctx, path)
 }
 
-func (s *ProjectService) GetRoles(ctx context.Context, projectKeyOrID string) ([]ProjectRole, error) {
+func (s *ProjectService) GetRoles(ctx context.Context, projectKeyOrID string) (map[string]string, error) {
 	if err := s.client.CheckEndpoint("projects"); err != nil {
 		return nil, err
 	}
 	path := fmt.Sprintf("/rest/api/2/project/%s/role", url.PathEscape(projectKeyOrID))
-	var roles []ProjectRole
+	var roles map[string]string
 	if err := s.client.Get(ctx, path, &roles); err != nil {
 		return nil, err
 	}

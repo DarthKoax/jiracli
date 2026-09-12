@@ -294,9 +294,9 @@ func DefaultConfigDir() string {
 	}
 	home, err := os.UserHomeDir()
 	if err != nil {
-		return ".config/darthkoax/jiracli"
+		return ".config/jiracli"
 	}
-	return filepath.Join(home, ".config", "darthkoax", "jiracli")
+	return filepath.Join(home, ".config", "jiracli")
 }
 
 func DefaultConfigPath() string {

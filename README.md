@@ -36,7 +36,7 @@ go install github.com/darkkoax/jiracli/cmd/jiracli@latest
 jiracli init
 ```
 
-This creates a default config file at `~/.config/darthkoax/jiracli/config.toml`.
+This creates a default config file at `~/.config/jiracli/config.toml`.
 
 ### 2. Edit Configuration
 
@@ -78,7 +78,7 @@ Connected to Jira DC as: John Doe (john.doe@example.com)
 
 ### Config File Location
 
-Default: `~/.config/darthkoax/jiracli/config.toml`
+Default: `~/.config/jiracli/config.toml`
 
 Override with `JIRA_CONFIG_DIR` environment variable:
 ```bash
@@ -132,7 +132,7 @@ jiracli init [--dir <path>]
 
 | Flag | Description |
 |------|-------------|
-| `--dir <path>` | Directory to create config in (default: `~/.config/darthkoax/jiracli`) |
+| `--dir <path>` | Directory to create config in (default: `~/.config/jiracli`) |
 
 ### `jiracli connect`
 
@@ -144,7 +144,7 @@ jiracli connect [--config <path>]
 
 | Flag | Description |
 |------|-------------|
-| `--config <path>` | Path to config file (default: `~/.config/darthkoax/jiracli/config.toml`) |
+| `--config <path>` | Path to config file (default: `~/.config/jiracli/config.toml`) |
 
 ### `jiracli version`
 
