@@ -20,6 +20,7 @@ A Go wrapper library and CLI for the **Jira Data Center / Server REST API**. Pro
 git clone https://github.com/darthkoax/jiracli.git
 cd jiracli
 go build -o jiracli ./cmd/jiracli
+mv ./jiracli /usr/local/bin
 ```
 
 ### Install to GOPATH
