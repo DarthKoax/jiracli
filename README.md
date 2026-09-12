@@ -17,7 +17,7 @@ A Go wrapper library and CLI for the **Jira Data Center / Server REST API**. Pro
 ### From Source
 
 ```bash
-git clone https://github.com/darkkoax/jiracli.git
+git clone https://github.com/darthkoax/jiracli.git
 cd jiracli
 go build -o jiracli ./cmd/jiracli
 ```
@@ -25,7 +25,7 @@ go build -o jiracli ./cmd/jiracli
 ### Install to GOPATH
 
 ```bash
-go install github.com/darkkoax/jiracli/cmd/jiracli@latest
+go install github.com/darthkoax/jiracli/cmd/jiracli@latest
 ```
 
 ## Quick Start

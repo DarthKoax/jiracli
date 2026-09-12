@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/darkkoax/jiracli/internal/config"
+	"github.com/darthkoax/jiracli/internal/config"
 )
 
 func handleInit(args []string) {

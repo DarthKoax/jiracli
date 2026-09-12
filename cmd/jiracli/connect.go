@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/darkkoax/jiracli/internal/api"
-	"github.com/darkkoax/jiracli/internal/client"
-	"github.com/darkkoax/jiracli/internal/config"
+	"github.com/darthkoax/jiracli/internal/api"
+	"github.com/darthkoax/jiracli/internal/client"
+	"github.com/darthkoax/jiracli/internal/config"
 )
 
 func handleConnect(args []string) {

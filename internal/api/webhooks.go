@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/darkkoax/jiracli/internal/client"
+	"github.com/darthkoax/jiracli/internal/client"
 )
 
 type WebhookService struct {

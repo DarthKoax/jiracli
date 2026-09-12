@@ -83,7 +83,7 @@ func main() {
 
 func printVersion() {
 	fmt.Printf("jiracli version %s\n", version)
-	fmt.Printf("GitHub: https://github.com/darkkoax/jiracli\n")
+	fmt.Printf("GitHub: https://github.com/darthkoax/jiracli\n")
 }
 
 func printRootHelp() {

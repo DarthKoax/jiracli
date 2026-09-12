@@ -7,8 +7,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/darkkoax/jiracli/internal/client"
-	"github.com/darkkoax/jiracli/internal/config"
+	"github.com/darthkoax/jiracli/internal/client"
+	"github.com/darthkoax/jiracli/internal/config"
 )
 
 func testClient(t *testing.T, handler http.Handler) (*client.Client, *httptest.Server) {

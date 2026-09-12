@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/darkkoax/jiracli/internal/api"
+	"github.com/darthkoax/jiracli/internal/api"
 )
 
 func handleIssue(args []string) {

@@ -145,10 +145,10 @@ Updated `internal/client/client.go` CheckEndpoint function to validate all new e
 
 All tests pass:
 ```
-ok  	github.com/darkkoax/jiracli/cmd/jiracli	1.462s
-ok  	github.com/darkkoax/jiracli/internal/api	0.472s
-ok  	github.com/darkkoax/jiracli/internal/client	0.230s
-ok  	github.com/darkkoax/jiracli/internal/config	0.003s
+ok  	github.com/darthkoax/jiracli/cmd/jiracli	1.462s
+ok  	github.com/darthkoax/jiracli/internal/api	0.472s
+ok  	github.com/darthkoax/jiracli/internal/client	0.230s
+ok  	github.com/darthkoax/jiracli/internal/config	0.003s
 ```
 
 ## 6. Documentation

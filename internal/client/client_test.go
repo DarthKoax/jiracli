@@ -8,7 +8,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/darkkoax/jiracli/internal/config"
+	"github.com/darthkoax/jiracli/internal/config"
 )
 
 func testConfig(baseURL string) *config.Config {

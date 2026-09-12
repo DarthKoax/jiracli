@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/darkkoax/jiracli/internal/client"
+	"github.com/darthkoax/jiracli/internal/client"
 )
 
 type AttachmentService struct {

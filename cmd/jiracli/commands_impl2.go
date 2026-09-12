@@ -7,7 +7,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/darkkoax/jiracli/internal/api"
+	"github.com/darthkoax/jiracli/internal/api"
 )
 
 // Dashboard handlers

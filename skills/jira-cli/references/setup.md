@@ -104,5 +104,5 @@ Prints the CLI version and GitHub repository information.
 **Output:**
 ```
 jiracli version 0.1.0
-GitHub: https://github.com/darkkoax/jiracli
+GitHub: https://github.com/darthkoax/jiracli
 ```

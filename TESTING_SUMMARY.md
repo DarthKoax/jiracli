@@ -318,3 +318,60 @@ This document summarizes the comprehensive testing approach used to validate CLI
 - Method gating should be tested for all four HTTP methods
 - Admin mode should be tested for all admin-only operations
 - Configuration should be tested for all override mechanisms
+
+## Post-Initial Release Improvements
+
+This section summarizes the types of improvements made after the initial release, which should be considered as part of ongoing maintenance for similar projects.
+
+### 1. API Response Schema Corrections
+
+- Fixed struct field types to match actual API responses (e.g., ID fields that can be int or string should use `interface{}`)
+- Corrected JSON tag mappings where field names didn't match API responses (e.g., `values` vs `issues`)
+- Changed return types to match actual API behavior (e.g., map vs array for role endpoints)
+- Added `omitempty` tags to optional fields to prevent serialization issues
+
+### 2. URL Encoding & Query Parameter Handling
+
+- Implemented proper URL encoding for all query parameters (JQL, fields, expand, etc.)
+- Ensured special characters and spaces in queries are correctly encoded
+- Applied consistent encoding across all services that accept query parameters
+
+### 3. HTTP Method Corrections
+
+- Changed operations to use correct HTTP methods based on API behavior (e.g., POST vs PUT for updates)
+- Updated operations to return response objects where APIs return data (not just success/failure)
+- Ensured operations fetch required data before performing dependent operations
+
+### 4. CLI Command Improvements
+
+- Added default action handling when no subcommand is provided (improves UX)
+- Added direct access patterns for commonly used operations
+- Fixed configuration path references in help text and documentation
+- Standardized default paths across all commands and documentation
+
+### 5. Test Coverage Expansion
+
+- Added tests for all pagination scenarios (board issues, backlog, sprints)
+- Added tests for query parameter encoding
+- Added tests for state filtering and field selection
+- Ensured all new functionality has corresponding test coverage
+
+### 6. Documentation & Configuration
+
+- Created comprehensive testing methodology documentation
+- Added agent/tool integration setup instructions
+- Reorganized reference documentation into structured skill format
+- Standardized configuration paths across codebase and documentation
+
+### 7. Ongoing Maintenance Checklist
+
+When maintaining similar projects, regularly review:
+
+- [ ] API response schemas match actual API behavior
+- [ ] All query parameters are properly URL-encoded
+- [ ] HTTP methods align with REST API standards
+- [ ] Return types provide useful data to callers
+- [ ] Default configuration paths are consistent
+- [ ] Help text and documentation reflect actual behavior
+- [ ] Test coverage includes edge cases and error paths
+- [ ] Integration instructions for AI agents/tools are current

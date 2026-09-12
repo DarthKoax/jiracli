@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/darkkoax/jiracli/internal/config"
+	"github.com/darthkoax/jiracli/internal/config"
 )
 
 var adminEndpoints = map[string]bool{

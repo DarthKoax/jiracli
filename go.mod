@@ -1,4 +1,4 @@
-module github.com/darkkoax/jiracli
+module github.com/darthkoax/jiracli
 
 go 1.26.3
 

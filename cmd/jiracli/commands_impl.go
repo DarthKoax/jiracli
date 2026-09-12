@@ -7,9 +7,9 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/darkkoax/jiracli/internal/api"
-	"github.com/darkkoax/jiracli/internal/client"
-	"github.com/darkkoax/jiracli/internal/config"
+	"github.com/darthkoax/jiracli/internal/api"
+	"github.com/darthkoax/jiracli/internal/client"
+	"github.com/darthkoax/jiracli/internal/config"
 )
 
 // Helper function to get services

@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/darkkoax/jiracli/internal/client"
+	"github.com/darthkoax/jiracli/internal/client"
 )
 
 type Services struct {

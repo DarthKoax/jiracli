@@ -3,7 +3,7 @@ package api
 import (
 	"context"
 
-	"github.com/darkkoax/jiracli/internal/client"
+	"github.com/darthkoax/jiracli/internal/client"
 )
 
 type MyselfService struct {
