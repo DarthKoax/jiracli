@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-const version = "0.1.0"
+const version = "0.2.0"
 
 func main() {
 	if len(os.Args) < 2 {
@@ -82,12 +82,12 @@ func main() {
 }
 
 func printVersion() {
-	fmt.Printf("jiracli version %s\n", version)
+	fmt.Printf("jiracli version %s%s\n", version, buildMode)
 	fmt.Printf("GitHub: https://github.com/darthkoax/jiracli\n")
 }
 
 func printRootHelp() {
-	fmt.Printf(`jiracli %s - Jira Data Center / Server CLI
+	fmt.Printf(`jiracli %s%s - Jira Data Center / Server CLI
 
 USAGE:
   jiracli <command> [flags]
@@ -148,7 +148,7 @@ EXAMPLES:
 
 For more information about a command, run:
   jiracli help <command>
-`, version)
+`, version, buildMode)
 }
 
 func printCommandHelp(command string) {

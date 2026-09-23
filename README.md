@@ -23,6 +23,27 @@ go build -o jiracli ./cmd/jiracli
 mv ./jiracli /usr/local/bin
 ```
 
+### Read-Only Build
+
+Build a binary that permanently disables all write operations (POST, PUT, DELETE). This is enforced at compile time and cannot be overridden by configuration.
+
+```bash
+go build -tags readonly -o jiracli-readonly ./cmd/jiracli
+```
+
+The read-only binary will display `(read-only)` in the version output:
+
+```
+$ jiracli-readonly version
+jiracli version 0.2.0 (read-only)
+```
+
+Any attempt to perform a write operation will fail with an error:
+
+```
+POST method is disabled: this binary was compiled in read-only mode (-tags readonly)
+```
+
 ### Install to GOPATH
 
 ```bash
@@ -231,6 +252,16 @@ Some endpoints require admin privileges. Enable `admin_mode = true` in config to
 - **Permission Schemes**: Create/update/delete permission schemes
 
 ## Access Control
+
+### Compile-Time Read-Only Mode
+
+Build a binary with all write operations permanently disabled:
+
+```bash
+go build -tags readonly -o jiracli-readonly ./cmd/jiracli
+```
+
+This enforces read-only access at compile time. POST, PUT, and DELETE methods cannot be enabled via configuration. See [Installation](#read-only-build) for details.
 
 ### Method Gating
 

@@ -36,6 +36,13 @@ func testClient(t *testing.T, handler http.Handler) (*client.Client, *httptest.S
 	return c, server
 }
 
+func skipIfReadOnly(t *testing.T) {
+	t.Helper()
+	if client.ReadOnlyMode {
+		t.Skip("skipping write-method test in readonly mode")
+	}
+}
+
 func TestIssueService_Get(t *testing.T) {
 	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/rest/api/2/issue/PROJ-1" {
@@ -56,6 +63,7 @@ func TestIssueService_Get(t *testing.T) {
 }
 
 func TestIssueService_Create(t *testing.T) {
+	skipIfReadOnly(t)
 	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			t.Errorf("Method = %v, want POST", r.Method)
@@ -78,6 +86,7 @@ func TestIssueService_Create(t *testing.T) {
 }
 
 func TestIssueService_Update(t *testing.T) {
+	skipIfReadOnly(t)
 	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPut {
 			t.Errorf("Method = %v, want PUT", r.Method)
@@ -94,6 +103,7 @@ func TestIssueService_Update(t *testing.T) {
 }
 
 func TestIssueService_Delete(t *testing.T) {
+	skipIfReadOnly(t)
 	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodDelete {
 			t.Errorf("Method = %v, want DELETE", r.Method)
@@ -130,6 +140,7 @@ func TestIssueService_GetTransitions(t *testing.T) {
 }
 
 func TestIssueService_DoTransition(t *testing.T) {
+	skipIfReadOnly(t)
 	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			t.Errorf("Method = %v, want POST", r.Method)
@@ -146,6 +157,7 @@ func TestIssueService_DoTransition(t *testing.T) {
 }
 
 func TestIssueService_AddComment(t *testing.T) {
+	skipIfReadOnly(t)
 	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(Comment{ID: "100", Body: "test comment"})
 	}))
@@ -289,6 +301,7 @@ func TestGroupService_Get(t *testing.T) {
 }
 
 func TestSearchService_Search(t *testing.T) {
+	skipIfReadOnly(t)
 	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(SearchResult{
 			Total: 1,
@@ -509,6 +522,7 @@ func TestSprintService_GetIssues(t *testing.T) {
 }
 
 func TestSprintService_MoveIssues(t *testing.T) {
+	skipIfReadOnly(t)
 	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			t.Errorf("Method = %v, want POST", r.Method)
@@ -528,6 +542,7 @@ func TestSprintService_MoveIssues(t *testing.T) {
 }
 
 func TestSprintService_Create(t *testing.T) {
+	skipIfReadOnly(t)
 	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			t.Errorf("Method = %v, want POST", r.Method)
@@ -548,6 +563,7 @@ func TestSprintService_Create(t *testing.T) {
 }
 
 func TestSprintService_Update(t *testing.T) {
+	skipIfReadOnly(t)
 	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPut {
 			t.Errorf("Method = %v, want PUT", r.Method)
@@ -567,6 +583,7 @@ func TestSprintService_Update(t *testing.T) {
 }
 
 func TestSprintService_Delete(t *testing.T) {
+	skipIfReadOnly(t)
 	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodDelete {
 			t.Errorf("Method = %v, want DELETE", r.Method)
@@ -583,6 +600,7 @@ func TestSprintService_Delete(t *testing.T) {
 }
 
 func TestSprintService_Complete(t *testing.T) {
+	skipIfReadOnly(t)
 	requestCount := 0
 	c, server := testClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		requestCount++
